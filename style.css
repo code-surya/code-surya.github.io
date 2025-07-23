@@ -1,51 +1,63 @@
+/* style.css - Tokyo Night inspired terminal portfolio theme */
+
 body {
   margin: 0;
   padding: 0;
   background-color: #1a1b26;
   color: #c0caf5;
   font-family: "Fira Code", monospace;
+  font-size: 16px;
   line-height: 1.6;
   scroll-behavior: smooth;
 }
 
 .terminal {
-  max-width: 800px;
-  margin: 4rem auto;
-  padding: 2rem;
-  background-color: #16161e;
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(93, 106, 163, 0.2);
+  max-width: 900px;
+  margin: 50px auto;
+  padding: 20px;
+  background: #1a1b26;
+  border: 1px solid #3b4261;
+  border-radius: 8px;
+  box-shadow: 0 0 20px #16161e;
+  animation: fadeIn 1.2s ease-out both;
 }
 
 .ascii {
   color: #7aa2f7;
   font-size: 14px;
-  margin-bottom: 2rem;
+  white-space: pre;
   text-align: center;
-  white-space: pre-wrap;
+  margin-bottom: 30px;
 }
 
 .content p,
 .content li {
-  margin-bottom: 0.8rem;
-}
-
-.highlight {
-  color: #bb9af7;
-  font-weight: bold;
+  margin: 10px 0;
 }
 
 .section {
-  color: #7dcfff;
+  color: #9ece6a;
   font-weight: bold;
+  text-transform: uppercase;
+}
+
+.highlight {
+  color: #f7768e;
 }
 
 ul {
-  padding-left: 1.2rem;
+  list-style: none;
+  padding-left: 0;
+}
+
+ul li::before {
+  content: "➜";
+  color: #bb9af7;
+  margin-right: 10px;
 }
 
 a {
-  color: #9ece6a;
+  color: #7dcfff;
   text-decoration: none;
 }
 
@@ -54,8 +66,40 @@ a:hover {
 }
 
 .footer {
-  margin-top: 3rem;
-  color: #565f89;
+  margin-top: 40px;
   font-style: italic;
-  font-size: 14px;
+  color: #565f89;
+  text-align: center;
 }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Optional floating nav placeholder (add later if needed) */
+/* 
+.nav {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.nav a {
+  background: #2f3549;
+  padding: 10px;
+  border-radius: 50%;
+  color: #c0caf5;
+  text-align: center;
+}
+*/
