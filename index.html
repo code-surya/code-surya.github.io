@@ -1,87 +1,343 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Surya's Terminal</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div class="terminal">
-      <pre class="ascii">
-       ___  __               
-      / _ \/ /__ ____  ___ _
-     / ___/ / _ `/ _ \/ _ `/
-    /_/  /_/\_,_/ .__/\_,_/ 
-               /_/          
-    </pre
-      >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Surya's Terminal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background: #0d1117;
+      color: #c0caf5;
+      font-family: 'Fira Code', monospace;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-      <div class="content">
-        <p>
-          > Hello, I’m
-          <span class="highlight">Surya Pratap Singh Gehlot</span> 👋
-        </p>
-        <p>
-          > A backend developer and curious student of everything interesting.
-        </p>
-        <p>> Problem solver. Algorithm crafter. Home lab tinkerer.</p>
+    #terminal {
+      background: #1a1b26;
+      border: 1px solid #3b4261;
+      padding: 2rem;
+      width: 80vw;
+      max-width: 800px;
+      height: 70vh;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      box-shadow: 0 0 12px #16161e;
+    }
 
-        <section>
-          <p>> <span class="section">about</span></p>
-          <p>
-            I'm good at breaking down complex problems and building reliable,
-            clean solutions. I’ve created many algorithm-based projects — small,
-            but with clever logic. I’ve worked on Linux for over a year, using
-            tools like Docker, Kubernetes, and setting up full-stack apps,
-            servers, and secure environments. I believe in building my own tools
-            and thriving in a terminal-focused, open-source world.
-          </p>
-        </section>
+    .splash {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #0d1117;
+      color: #7aa2f7;
+      font-family: 'Fira Code', monospace;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      white-space: pre;
+    }
 
-        <section>
-          <p>> <span class="section">skills</span></p>
-          <ul>
-            <li>• Web Dev (HTML, CSS, JavaScript, Flask, Django, MySQL)</li>
-            <li>• Python (pandas, web scraping, automations)</li>
-            <li>• Backend APIs, WebSockets</li>
-            <li>• Linux, Docker, Kubernetes, SQL</li>
-            <li>• Tools: Arch Linux, Neovim, tmux, git, grep, etc.</li>
-          </ul>
-        </section>
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #3b4261;
+    }
+    #mobile-buttons {
+    display: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+    padding: 10px;
+    }
 
-        <section>
-          <p>> <span class="section">projects</span></p>
-          <ul>
-            <li>
-              <strong>Auto CUG Assigner</strong>: system that automates CUG
-              number mapping via Excel
-            </li>
-            <li>
-              <strong>Algorithm Toolbox</strong>: custom Luhn checker, Coleman
-              index, cipher generator, etc.
-            </li>
-          </ul>
-        </section>
+    #mobile-buttons button {
+    background-color: #1a1b26;
+    color: #c0caf5;
+    border: 1px solid #3b4261;
+    padding: 8px 16px;
+    font-family: monospace;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    }
 
-        <section>
-          <p>> <span class="section">contact</span></p>
-          <p>
-            Email:
-            <a href="mailto:suryapratapsinghg@gmail.com"
-              >suryapratapsinghg@gmail.com</a
-            >
-          </p>
-          <p>
-            LinkedIn:
-            <a href="https://linkedin.com/in/code-surya" target="_blank"
-              >linkedin.com/in/code-surya</a
-            >
-          </p>
-        </section>
+    #mobile-keys button {
+    background-color: #1a1b26;
+    color: #c0caf5;
+    border: 1px solid #3b4261;
+    padding: 8px 14px;
+    font-family: monospace;
+    font-size: 14px;
+    margin: 5px;
+    border-radius: 4px;
+    cursor: pointer;
+    }
+    .ascii {
+    font-family: monospace;
+    font-size: 16px;
+    line-height: 1.2;
+    white-space: pre;
+    overflow-x: auto;
+    transition: font-size 0.2s ease;
+    }
 
-        <p class="footer">> built with ❤️ in a terminal by Surya</p>
-      </div>
+    @media (max-width: 768px) {
+        .ascii{
+            font-size: 9px !important;
+            line-height: 1.1 !important;
+        }
+        #splash {
+        font-size: 11px; /* smaller font to prevent distortion */
+        white-space: pre-wrap;
+        word-break: break-word;
+        }
+        #mobile-keys {
+        display: block;
+        position: absolute;
+        bottom: 20px;
+        width: 100%;
+        text-align: center;
+        }
+
+        #terminal {
+            padding-bottom: 100px; /* Give space for buttons */
+        }
+
+        .splash {
+            font-size: 11px;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        /* Reduce ASCII art font size */
+        pre, #terminal {
+            font-size: 12px;
+        }
+
+
+    }
+  </style>
+</head>
+<body>
+    <div id="terminal">
     </div>
-  </body>
+    <div id="splash" class="splash"></div>
+    <div id="mobile-keys" style="display: none;">
+        <div style="margin-top: 1rem; text-align: center;">
+          <button onclick="simulateKey('a')">About</button>
+          <button onclick="simulateKey('s')">Skills</button>
+          <button onclick="simulateKey('p')">Projects</button>
+          <button onclick="simulateKey('c')">Contact</button>
+          <!-- <button onclick="simulateKey('q')">Home</button> -->
+        </div>
+      </div>
+
+  <script>
+    const terminal = document.getElementById("terminal");
+    const splash = document.getElementById("splash");
+
+    const sections = {
+      about: `
+> about
+
+I'm Surya, a backend developer and problem solver.
+I build resilient algorithms, love working with Linux, containers, and open-source tools.
+Always hacking on something new in my homelab.
+`,
+      skills: `
+> skills
+
+Languages: C, Python, JavaScript, SQL
+Web: Flask, Django, HTML/CSS, WebSockets
+Tools: Docker, Git, grep, Arch, tmux, Neovim
+Databases: MySQL, SQLite
+OS: Arch Linux + Hyprland + Key-centric workflows
+`,
+      projects: `
+> projects
+
+• Auto CUG Assigner – Automates closed user group logic
+• Coleman Index – Custom algorithm for ranking
+• Cipher Generator – Secure text-based encryption
+• ...and more tool-based experiments in my homelab
+`,
+      contact: `
+> contact
+
+📧 suryapratapsinghg@gmail.com
+🔗 linkedin.com/in/code-surya
+`
+    };
+
+    const asciiMap = {
+      about: `
+ █████╗ ██████╗  ██████╗ ██╗   ██╗████████╗
+██╔══██╗██╔══██╗██╔═══██╗██║   ██║╚══██╔══╝
+███████║██████╔╝██║   ██║██║   ██║   ██║   
+██╔══██║██╔══██╗██║   ██║██║   ██║   ██║   
+██║  ██║██████╔╝╚██████╔╝╚██████╔╝   ██║   
+╚═╝  ╚═╝╚═════╝  ╚═════╝  ╚═════╝    ╚═╝                                              
+`,
+      skills: `
+███████╗██╗  ██╗██╗██╗     ██╗     ███████╗
+██╔════╝██║ ██╔╝██║██║     ██║     ██╔════╝
+███████╗█████╔╝ ██║██║     ██║     ███████╗
+╚════██║██╔═██╗ ██║██║     ██║     ╚════██║
+███████║██║  ██╗██║███████╗███████╗███████║
+╚══════╝╚═╝  ╚═╝╚═╝╚══════╝╚══════╝╚══════╝    
+`,
+      projects: `
+██████╗ ██████╗  ██████╗      ██╗███████╗████████╗███████╗
+██╔══██╗██╔══██╗██╔═══██╗     ██║██╔════╝╚══██╔══╝██╔════╝
+██████╔╝██████╔╝██║   ██║     ██║█████╗     ██║   ███████╗
+██╔═══╝ ██╔══██╗██║   ██║██   ██║██╔══╝     ██║   ╚════██║
+██║     ██║  ██║╚██████╔╝╚█████╔╝███████╗   ██║   ███████║
+╚═╝     ╚═╝  ╚═╝ ╚═════╝  ╚════╝ ╚══════╝   ╚═╝   ╚══════╝
+`,
+      contact: `
+ ██████╗ ██████╗ ███╗   ██╗████████╗ █████╗  ██████╗████████╗
+██╔════╝██╔═══██╗████╗  ██║╚══██╔══╝██╔══██╗██╔════╝╚══██╔══╝
+██║     ██║   ██║██╔██╗ ██║   ██║   ███████║██║        ██║   
+██║     ██║   ██║██║╚██╗██║   ██║   ██╔══██║██║        ██║   
+╚██████╗╚██████╔╝██║ ╚████║   ██║   ██║  ██║╚██████╗   ██║   
+ ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝   ╚═╝   
+`
+    };
+
+    const introLines = [
+      "> whoami",
+      "> Hello, I’m Surya Pratap Singh Gehlot 👋",
+      "> A backend developer and curious student of everything interesting.",
+      "> Problem solver. Algorithm crafter. Home lab tinkerer."
+    ];
+
+    const menuText = `
+> Select a section:
+[A] About     [S] Skills
+[P] Projects  [C] Contact
+
+(Q anytime to return here)
+`;
+
+    let introIndex = 0;
+    let charIndex = 0;
+    let introOutput = '';
+
+    function typeIntro() {
+      if (introIndex < introLines.length) {
+        if (charIndex < introLines[introIndex].length) {
+          introOutput += introLines[introIndex][charIndex++];
+          terminal.textContent = introOutput;
+          setTimeout(typeIntro, 30);
+        } else {
+          introOutput += '\n';
+          charIndex = 0;
+          introIndex++;
+          setTimeout(typeIntro, 100);
+        }
+      } else {
+        terminal.textContent = introOutput + menuText;
+        if (window.innerWidth < 768) {
+        document.getElementById("mobile-keys").style.display = "block";
+        }
+        document.addEventListener("keydown", handleKeyPress);
+      }
+    }
+
+    function handleKeyPress(e) {
+    const key = e.key.toLowerCase();
+    let sectionKey = null;
+
+    if (key === 'a') sectionKey = 'about';
+    else if (key === 's') sectionKey = 'skills';
+    else if (key === 'p') sectionKey = 'projects';
+    else if (key === 'c') sectionKey = 'contact';
+
+    if (sectionKey) {
+        showSplashThenType(sectionKey);
+    } else if (key === 'q') {
+        terminal.textContent = "> exit\n\nReturning to main menu...\n";
+        setTimeout(() => {
+        resetIntro();
+        }, 800);
+    }
+    }
+    function simulateKey(key){
+        handleKeyPress({key});
+    }
+    function resetIntro() {
+      introIndex = 0;
+      charIndex = 0;
+      introOutput = '';
+      terminal.textContent = '';
+      typeIntro();
+    }
+
+    function showSplashThenType(sectionKey) {
+      const ascii = asciiMap[sectionKey];
+      const content = sections[sectionKey];
+      splash.textContent = ascii;
+      splash.style.display = "flex";
+
+      setTimeout(() => {
+        splash.style.display = "none";
+        // terminal.innerHTML = `> ${sectionKey}<br><br><pre class="ascii">${ascii}</pre>`;
+        const asciiBlock = document.createElement('pre');
+        asciiBlock.className = 'ascii';
+        asciiBlock.textContent = ascii;
+
+        terminal.innerHTML = `> ${sectionKey}<br><br>`;
+        terminal.appendChild(asciiBlock);
+        let i = 0;
+        function type() {
+          if (i < content.length) {
+            // terminal.textContent += content[i++];
+            const span = document.createElement("span");
+            span.textContent = content[i++];
+            terminal.appendChild(span);
+            setTimeout(type, 10);
+          } else {
+            // terminal.textContent += "\n\n(Press [Q] to return)";
+            const note = document.createElement("div");
+            note.textContent = "\n\n(Press [Q] to return)";
+            terminal.appendChild(note);
+          }
+        }
+        setTimeout(type, 300);
+      }, 900);
+    }
+
+    // Initial whoami splash
+    window.onload = () => {
+      let whoamiSplash = "> whoami";
+      let i = 0;
+      function typeSplash() {
+        if (i < whoamiSplash.length) {
+          splash.textContent += whoamiSplash[i++];
+          setTimeout(typeSplash, 120);
+        } else {
+          setTimeout(() => {
+            splash.style.display = "none";
+            typeIntro();
+          }, 800);
+        }
+      }
+      typeSplash();
+    };
+    
+
+  </script>
+</body>
 </html>
